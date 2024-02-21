@@ -9,6 +9,7 @@ import 'package:instagram_clone/firebase_options.dart';
 import 'package:instagram_clone/providers/auth_state.dart';
 import 'package:instagram_clone/providers/auth_provider.dart' as myAuthProvider;
 import 'package:instagram_clone/repositories/auth_repository.dart';
+import 'package:instagram_clone/screens/signin_screen.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -38,17 +39,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
-        home: MainScreen(),
+        home: SigninScreen(),
       ),
     );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SignupScreen();
   }
 }

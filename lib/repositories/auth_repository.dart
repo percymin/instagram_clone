@@ -19,16 +19,43 @@ class AuthRepository {
     required this.firebaseFirestore,
   });
 
+  Future<void> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try{
+      UserCredential userCredential =
+    await firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
+    bool isverified = userCredential.user!.emailVerified;
+    if(!isverified){
+      await userCredential.user!.sendEmailVerification();
+      await firebaseAuth.signOut();
+      throw CustomException(code: 'Exception', message: '인증되지 않은 메일',);
+    }
+
+    } on FirebaseException catch(e) {
+      throw CustomException(code: e.code, message: e.message!,);
+    }
+    catch(e){
+      throw CustomException(code: 'Exception', message: e.toString(),);
+    }
+    
+
+  }
 
   Future<void> signUp({
     required String email,
     required String name,
     required String password,
     required Uint8List? profileImage,
-}) async {
+  }) async {
     try {
-      UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -45,29 +72,27 @@ class AuthRepository {
         downloadUrl = await snapshot.ref.getDownloadURL();
       }
 
-      await firebaseFirestore.collection('users').doc(uid).set(
-          {
-            'uid': uid,
-            'email': email,
-            'name': name,
-            'profileImage': downloadUrl,
-            'feedCount': 0,
-            'likes': [],
-            'followers': [],
-            'following': [],
-          }
-      );
+      await firebaseFirestore.collection('users').doc(uid).set({
+        'uid': uid,
+        'email': email,
+        'name': name,
+        'profileImage': downloadUrl,
+        'feedCount': 0,
+        'likes': [],
+        'followers': [],
+        'following': [],
+      });
       firebaseAuth.signOut();
-    } on FirebaseException catch(e) {
+    } on FirebaseException catch (e) {
       CustomException(
         code: e.code,
         message: e.message!,
       );
     } catch (e) {
-      throw CustomException(code: 'Exception', message: e.toString(),);
+      throw CustomException(
+        code: 'Exception',
+        message: e.toString(),
+      );
     }
-
   }
-
-
 }

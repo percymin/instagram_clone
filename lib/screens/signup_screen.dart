@@ -5,6 +5,7 @@ import 'package:instagram_clone/providers/auth_provider.dart' as myAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/screens/signin_screen.dart';
 import 'package:instagram_clone/widgets/error_dialog_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart';
@@ -244,7 +245,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     SizedBox(height: 10),
 
                     TextButton(
-                        onPressed: _isEnabled ?  () {} : null,
+                        onPressed: _isEnabled ? () =>
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) => SigninScreen()
+                                )) : null,
                         child: Text('이미 회원이신가요? 로그인 하기', style: TextStyle(fontSize: 20),
                         ),
                     )
