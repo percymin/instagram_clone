@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:instagram_clone/providers/auth_state.dart';
+import 'package:instagram_clone/providers/auth/auth_state.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
-import 'package:instagram_clone/providers/auth_provider.dart' as myAuthProvider;
+import 'package:instagram_clone/providers/auth/auth_provider.dart' as myAuthProvider;
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart';
 

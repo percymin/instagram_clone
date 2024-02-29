@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:instagram_clone/exceptions/custom_exception.dart';
-import 'package:instagram_clone/providers/auth_provider.dart' as myAuthProvider;
+import 'package:instagram_clone/providers/auth/auth_provider.dart' as myAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -220,6 +220,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             password: _nameEditingController.text,
                             profileImage: _image,
                           );
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SigninScreen(),));
+
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

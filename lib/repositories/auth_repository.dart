@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:instagram_clone/exceptions/custom_exception.dart';
-import 'package:instagram_clone/providers/auth_state.dart';
+import 'package:instagram_clone/providers/auth/auth_state.dart';
 import 'package:mime/mime.dart';
 
 class AuthRepository {
@@ -18,6 +18,10 @@ class AuthRepository {
     required this.firebaseStorage,
     required this.firebaseFirestore,
   });
+
+  Future<void> signOut() async{
+    await firebaseAuth.signOut();
+  }
 
   Future<void> signIn({
     required String email,
