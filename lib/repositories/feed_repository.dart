@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/rendering.dart';
 import 'package:instagram_clone/models/feed_model.dart';
@@ -18,6 +19,35 @@ class FeedRepository{
     required this.firebaseStorage,
     required this.firebaseFirestore,
 });
+
+  Future<List<FeedModel>> getFeedList() async {
+
+    try{
+      QuerySnapshot<Map<String, dynamic>> snapshot = await firebaseFirestore.collection('feeds').orderBy('createAt', descending: true).get();
+      return await Future.wait(snapshot.docs.map((e) async {
+        Map<String, dynamic> data = e.data();
+        DocumentReference<Map<String, dynamic>> writerDocRef = data['writer'];
+        DocumentSnapshot<Map<String, dynamic>> writerSnapshot = await writerDocRef.get();
+        UserModel userModel = UserModel.fromMap(writerSnapshot.data()!);
+        data['writer'] = userModel;
+        FeedModel.fromMap(data);
+        return FeedModel.fromMap(data);
+      }).toList());
+    } on FirebaseException catch (e) {
+
+      throw CustomException(
+        code: e.code,
+        message: e.message!,
+      );
+    } catch (e) {
+
+      throw CustomException(
+        code: 'Exception',
+        message: e.toString(),
+      );
+    }
+
+  }
 
   Future<void> uploadFeed({
     required List<String> files,

@@ -54,4 +54,8 @@ class FeedModel {
     );
   }
 
+  @override
+  String toString() {
+    return 'FeedModel{uid: $uid, feedId: $feedId, desc: $desc, imageUrls: $imageUrls, likes: $likes, commentCount: $commentCount, likeCount: $likeCount, createAt: $createAt, writer: $writer}';
+  }
 }

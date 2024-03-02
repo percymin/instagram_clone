@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/providers/auth/auth_provider.dart';
+import 'package:instagram_clone/screens/feed_screen.dart';
 import 'package:instagram_clone/screens/feed_upload_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +32,7 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   void dispose() {
+    super.dispose();
     // TODO: implement dispose
     tabController.dispose();
   }
@@ -44,7 +46,7 @@ class _MainScreenState extends State<MainScreen>
           controller: tabController,
           physics: NeverScrollableScrollPhysics(),
           children: [
-            Center(child: Text('1'),),
+            FeedScreen(),
             Center(child: Text('2'),),
             FeedUploadScreen(
               onFeedUploaded: () {

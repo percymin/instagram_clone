@@ -48,5 +48,8 @@ class UserModel {
     );
   }
 
-
+  @override
+  String toString() {
+    return 'UserModel{uid: $uid, name: $name, email: $email, profileImage: $profileImage, feedCount: $feedCount, followers: $followers, following: $following, likes: $likes}';
+  }
 }
