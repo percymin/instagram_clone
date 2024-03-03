@@ -28,7 +28,7 @@ class FeedProvider extends StateNotifier<FeedState> with LocatorMixin{
   Future<void> uploadFeed({
     required List<String> files,
     required String desc,
-}) async {
+  }) async {
     try{
       state = state.copyWith(feedStatus: FeedStatus.submitting);
 

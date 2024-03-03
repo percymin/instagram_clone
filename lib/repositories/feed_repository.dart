@@ -25,12 +25,14 @@ class FeedRepository{
     try{
       QuerySnapshot<Map<String, dynamic>> snapshot = await firebaseFirestore.collection('feeds').orderBy('createAt', descending: true).get();
       return await Future.wait(snapshot.docs.map((e) async {
+
+        // firebaseFirestore에서 불러온 feed 중 writer 를 UserModel 로 변환
         Map<String, dynamic> data = e.data();
         DocumentReference<Map<String, dynamic>> writerDocRef = data['writer'];
         DocumentSnapshot<Map<String, dynamic>> writerSnapshot = await writerDocRef.get();
         UserModel userModel = UserModel.fromMap(writerSnapshot.data()!);
         data['writer'] = userModel;
-        FeedModel.fromMap(data);
+
         return FeedModel.fromMap(data);
       }).toList());
     } on FirebaseException catch (e) {
@@ -93,21 +95,16 @@ class FeedRepository{
       });
 
 
-      //await feedDocRef.set(feedModel.toMap(userDocRef: userDocRef));
+      // firebaseFirestore에 게시글 저장
+      // feedModel.toMap(userDocRef: userDocRef) : writer(user)를 firebaseFirestore에 맞는 형태로 변경
       batch.set(feedDocRef, feedModel.toMap(userDocRef: userDocRef));
 
-      // here2
+      // writer(user)의 게시글 갯수 +1
+      batch.update(userDocRef, {'feedCount': FieldValue.increment(1),});
 
-       //await userDocRef.update({
-       // 'feedCount': FieldValue.increment(1),
-       //});
-
-      batch.update(userDocRef, {
-        'feedCount': FieldValue.increment(1),
-        });
-
-
+      // firebaseFirestore에 실제로 저장
       batch.commit();
+
       return feedModel;
 
     } on FirebaseException catch (e) {
