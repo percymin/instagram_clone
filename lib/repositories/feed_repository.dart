@@ -49,7 +49,7 @@ class FeedRepository{
 
   }
 
-  Future<void> uploadFeed({
+  Future<FeedModel> uploadFeed({
     required List<String> files,
     required String desc,
     required String uid,
@@ -76,7 +76,8 @@ class FeedRepository{
         return await taskSnapshot.ref.getDownloadURL();
       }).toList());
 
-      DocumentSnapshot<Map<String,dynamic>> userSnapshot = await userDocRef.get();
+      DocumentSnapshot<Map<String,dynamic>> userSnapshot =
+        await userDocRef.get();
       UserModel userModel = UserModel.fromMap(userSnapshot.data()!);
 
       FeedModel feedModel = FeedModel.fromMap({
@@ -88,7 +89,7 @@ class FeedRepository{
         'likeCount': 0,
         'commentCount': 0,
         'createAt': Timestamp.now(),
-        'writer': userDocRef,
+        'writer': userModel,
       });
 
 
@@ -105,9 +106,9 @@ class FeedRepository{
         'feedCount': FieldValue.increment(1),
         });
 
-      throw CustomException(code: 'ex', message: 'test');
 
       batch.commit();
+      return feedModel;
 
     } on FirebaseException catch (e) {
       _deleteImage(imageUrls);
